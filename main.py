@@ -1,16 +1,19 @@
-﻿# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+# from player import Player
+from room import Room
+from directions import Direction
+from coordinate import Coordinate
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def main() -> None:
+    print("Main")
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    rooms: list[Room] = []
+
+    # player: Player = Player(50.0)
+    room: Room = Room(Coordinate(0, 0), "Entrance")
+    rooms.append(room)
+    print(rooms)
+
+
+if __name__ == "__main__":
+    main()
