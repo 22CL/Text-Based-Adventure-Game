@@ -7,6 +7,7 @@ class Action(Enum):
     EXIT = "exit"
     LOOK = "look"
     ERROR = "error"
+    GET_INVENTORY = "i"
 
     @classmethod
     def from_input(cls, userInput: str) -> Action | ActionError:

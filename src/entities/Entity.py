@@ -2,11 +2,12 @@
 
 
 class Entity:
-    def __init__(self, health: int, damage: int, loot: list[Item]):
+    def __init__(self, customId: str, health: int, damage: int, loot: list[Item]):
         self.__health: int = health
         self.__damage: int = damage
         self.__loot: list[Item] = loot
         self.__dead: bool = False
+        self.__id: str = customId
 
     def get_health(self) -> int:
         return self.__health
