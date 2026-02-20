@@ -1,0 +1,31 @@
+Screen {
+    align: center middle;
+}
+
+.current_action {
+    width: 4fr;          /* fills all remaining horizontal space */
+    height: 100%;        /* fills the full height of the Horizontal */
+    content-align: center top;   /* centers text horizontally, anchors to top */
+    padding-top: 10;     /* pushes it down a bit from the top */
+}
+
+Button {
+    margin: 1 2;
+    width: 100%;
+}
+
+Horizontal > VerticalScroll {
+    width: 1fr;
+}
+
+.header {
+    margin: 1 0 0 2;
+    text-style: bold;
+}
+
+#move_menu {
+    display: none;
+    width: 16;           /* fixed width so it doesn't eat the main area */
+    height: auto;
+    background: $panel;
+}
