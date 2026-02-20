@@ -1,6 +1,7 @@
 import random
 from typing import Final
 import sys
+from time import sleep
 
 from src.player import Player
 from src.rooms import Room, get_rooms, get_room_at_player, get_next_room
@@ -30,8 +31,10 @@ def main() -> None:
             running = False
             break
 
-        for item in currentRoom.items:
-            print(f"You picked up: {item}")
+        for itemList in currentRoom.items:
+            sleep(1)
+            item = Item(name=itemList[0], damageAmount=itemList[1], itemId=itemList[2])
+            print(f"You picked up: {item.name}")
             player.add_to_inventory(item)
 
         currentRoom.items = []
@@ -42,11 +45,12 @@ def main() -> None:
         for enemyName in currentRoom.enemies:
             global enemy
             enemy = None
-            selectedItemFromPlayer = Item("temporary item", -sys.maxsize, "temporaryitem")
+            selectedItemFromPlayer = Item("Fists", 1, "fists")
             for item in player.get_inventory():
                 if item.damageAmount > selectedItemFromPlayer.damageAmount:
                     selectedItemFromPlayer = item
             print(f"There is a {enemyName}!")
+            sleep(1)
             if enemyName == "BasicSpider":
                 enemy = BasicSpider(f"{currentRoom.name}BasicSpider")
             if enemyName == "BigSpider":
@@ -57,14 +61,23 @@ def main() -> None:
                 if chance < 7:
                     print(f"You attack the spider dealing {selectedItemFromPlayer.damageAmount} damage!")
                     enemy.apply_damage(selectedItemFromPlayer.damageAmount)
+                    sleep(1)
                 else:
                     print(f"The {enemyName} attacks you dealing {enemy.get_damage()} damage!")
                     player.apply_damage(enemy.get_damage())
+                    sleep(1)
             if player.get_health() > 0:
                 print(f"You killed the {enemyName}!")
+                sleep(.5)
                 print(f"You have {player.get_health()} health!")
+                sleep(.5)
+                print("You got it's loot!")
+                sleep(.5)
+                for lootItem in enemy.get_loot():
+                    player.add_to_inventory(lootItem)
             else:
                 print(f"The {enemyName} killed you!")
+                sleep(1)
                 print("Try again to beat this game!")
                 running = False
                 break
@@ -73,8 +86,6 @@ def main() -> None:
         # Check for player death so you cannot try to move after death
         if not running:
             break
-
-        print(f"\n{player}")
 
         userAction: Action | ActionError = Action.from_input(str(input(">> ")).upper())
         if type(userAction) == ActionError:
@@ -98,7 +109,10 @@ def main() -> None:
 
                     response: str = ""
 
-                    nextRoom: Room | None = surrounding_rooms[direction]
+                    if type(direction) is not DirectionError:
+                        nextRoom: Room | None = surrounding_rooms[direction]
+                    else:
+                        nextRoom = None
 
                     if nextRoom is None:
                         canMoveToNextRoom = False
@@ -117,8 +131,10 @@ def main() -> None:
                                 response = "Sorry, that room is locked!"
                                 canMoveToNextRoom = False
 
-                    if response != "":
+                    if response != "" and type(direction) is not DirectionError:
                         print(response)
+                    else:
+                        pass
 
                     if canMoveToNextRoom:
                         player.move(direction)
@@ -146,7 +162,10 @@ def main() -> None:
                     print("Goodbye")
                     running = False
                 case Action.GET_INVENTORY:
-                    print(player.get_inventory())
+                    inventory = player.get_inventory()
+                    print("You have:")
+                    for item in inventory:
+                        print(item.name)
                 case _:
                     print("Sorry, Action checks failed! This is a bug! Try again!")
 

@@ -3,7 +3,6 @@ rooms:
     position:
       - 0
       - 0
-    locked: false
 
   - name: Combat Cave
     position:
@@ -12,4 +11,55 @@ rooms:
     enemies:
       - BasicSpider
       - BasicSpider
-    locked: false
+
+  - name: Rest Room
+    position:
+      - 2
+      - 0
+
+  - name: Chest Room
+    position:
+      - 2
+      - 1
+    items:
+      - ["Strong Sword", 10, "strongsword"]
+
+  - name: Big Spider Fight
+    position:
+      - 3
+      - 1
+    enemies:
+      - BigSpider
+
+  - name: Trap Room
+    position:
+      - [4, 1]
+      - [3, 2]
+    enemies:
+      - BigSpider
+
+  - name: Key Room
+    position:
+      - [4, 1]
+      - [3, 2]
+    items:
+      - ["Key", 0, "lockeddoorkey"]
+
+  - name: Locked Door
+    position:
+      - 2
+      - -1
+    locked: true
+    requiredItemToOpenId: "lockeddoorkey"
+
+  - name: Higher
+    position:
+      - 3
+      - -1
+    enemies:
+        - BasicSpider
+
+  - name: Exit
+    position:
+      - 4
+      - -1

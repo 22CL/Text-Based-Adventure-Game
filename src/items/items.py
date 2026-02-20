@@ -5,4 +5,4 @@
         self.itemId = itemId
 
     def __repr__(self) -> str:
-        return f"name: {self.name} id: {self.itemId}, damage: {self.damageAmount}"
+        return f"(name: {self.name} id: {self.itemId} damage: {self.damageAmount})"

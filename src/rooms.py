@@ -1,10 +1,12 @@
-from typing import Final, Annotated, Optional, Required
+from typing import Final, Annotated, Optional
+import random
+import yaml
+from os import path
+
 from src.directions import Direction
 from src.entities.Entity import Entity
 from src.items.items import Item
 from src.player import Player
-import yaml
-from os import path
 
 
 class Room:
@@ -17,7 +19,7 @@ class Room:
                  requiredItemToOpenId: Optional[str] = None
                  ) -> None:
         if locked and requiredItemToOpenId is None:
-            raise ValueError(f"requiredItemToOpen must be provided when locked is True for {name} room")
+            raise ValueError(f"requiredItemToOpenId must be provided when locked is True for {name} room")
 
         # noinspection PyTypeChecker
         self.position: Final[tuple[int, int]] = tuple(position)
@@ -59,10 +61,29 @@ with open(path.join("config", "rooms.yaml"), 'r', encoding="utf-8-sig") as file:
 roomsInfo = data['rooms']
 
 rooms1d: list[Room] = []
-for roomData in roomsInfo:
-    room = Room(**roomData)
-    rooms1d.append(room)
+flexible_groups: dict[str, list[dict]] = {}
 
+for roomData in roomsInfo:
+    position = roomData['position']
+    if all(isinstance(p, list) for p in position):
+        # Use the position pool as a hashable key to group rooms that share the same pool
+        position_key = str(sorted([tuple(p) for p in position]))
+        if position_key not in flexible_groups:
+            flexible_groups[position_key] = []
+        flexible_groups[position_key].append(roomData)
+    else:
+        room = Room(**roomData)
+        rooms1d.append(room)
+
+# For each group of rooms sharing a position pool, shuffle and assign
+for position_key, group in flexible_groups.items():
+    positions = [list(p) for p in eval(position_key)]  # recover positions from key
+    random.shuffle(positions)
+    for roomData, position in zip(group, positions):
+        room = Room(**{**roomData, 'position': position})
+        rooms1d.append(room)
+
+# Now rooms1d is finalized, build the 2D grid
 max_x = max(room.position[0] for room in rooms1d)
 max_y = max(room.position[1] for room in rooms1d)
 
