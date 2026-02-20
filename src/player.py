@@ -1,47 +1,47 @@
 from src.directions import Direction
-from src.items.items import Item, Sword
+from src.items.items import Item
 
 
 class Player:
-    def __init__(self, health: float, coord: tuple[int, int]) -> None:
-        self.__health: float = health
-        self.__coord: tuple[int, int] = coord
-        self.__inventory: list[Item] = []
+    def __init__(self, health: float, position: tuple[int, int]) -> None:
+        self.health: float = health
+        self.position: tuple[int, int] = position
+        self.inventory: list[Item] = []
 
-        self.__inventory.append(Sword("Weak Sword", 5, "weaksword"))
+        self.inventory.append(Item("Weak Sword", 5, "weaksword"))
     
     def __repr__(self) -> str:
         return (f"Player Stats:\n"
-                f"Health: {self.__health}\n"
-                f"Position: {self.__coord}\n"
+                f"Health: {self.health}\n"
+                f"Position: {self.position}\n"
                 )
 
-    def has(self, item_type) -> bool:
-        return any(isinstance(item, item_type) for item in self.__inventory)
+    def has_item(self, item_type) -> bool:
+        return any(isinstance(item, item_type) for item in self.inventory)
 
-    def get(self, item_type) -> Item:
+    def get_item(self, item_type) -> Item:
         return next(
-            (item for item in self.__inventory if isinstance(item, item_type)),
+            (item for item in self.inventory if isinstance(item, item_type)),
             None
         )
 
     def get_health(self) -> float:
-        return self.__health
+        return self.health
 
     def apply_damage(self, damage: float):
-        self.__health -= damage
+        self.health -= damage
     
     def move(self, direction: Direction):
-        self.__coord = (self.__coord[0] + direction.value[0], self.__coord[1] + direction.value[1])
+        self.position = (self.position[0] + direction.value[0], self.position[1] + direction.value[1])
 
-    def get_coordinates(self) -> tuple[int, int]:
-        return self.__coord[0], self.__coord[1]
+    def get_position(self) -> tuple[int, int]:
+        return self.position[0], self.position[1]
 
     def get_inventory(self) -> list[Item]:
-        return self.__inventory
+        return self.inventory
 
     def add_to_inventory(self, item: Item):
-        self.__inventory.append(item)
+        self.inventory.append(item)
 
     def remove_from_inventory(self, item: Item):
-        self.__inventory.remove(item)
+        self.inventory.remove(item)

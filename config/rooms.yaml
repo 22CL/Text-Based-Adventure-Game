@@ -1,0 +1,15 @@
+rooms:
+  - name: Entrance
+    position:
+      - 0
+      - 0
+    locked: false
+
+  - name: Combat Cave
+    position:
+      - 1
+      - 0
+    enemies:
+      - BasicSpider
+      - BasicSpider
+    locked: false

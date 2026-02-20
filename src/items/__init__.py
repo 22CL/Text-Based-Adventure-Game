@@ -1,4 +1,4 @@
-﻿from .items import Item, Sword, Key
+﻿from .items import Item
 
 
-__all__ = ["Item", "Sword", "Key"]
+__all__ = ["Item"]
